@@ -37,9 +37,9 @@ void ShowMenu()
     // Simple text menu of section options
     cout << "Please select one of the following options..." << endl;
     cout << "Show menu: \'M\'" << endl;
-    //cout << "To purchase a surfboard press \'P\'" << endl;
-    //cout << "To display current purc hases press \'C\'" << endl;
-    //cout << "To display total amount due press \'T\'" << endl;
+    cout << "Show Accounts: \'A\'" << endl;
+    cout << "Show Transaction History: \'T\'" << endl;
+    cout << "Delete an Account: \'D\'" << endl;
     cout << "Quit: \'Q\'" << endl << endl;
 
 }

@@ -10,6 +10,7 @@ using namespace std;
 #include "Header.h"
 #include "LayoutFuncs.h"
 #include "CountFileRows.h"
+#include "DeleteAcc.h"
 
 
 
@@ -38,6 +39,9 @@ struct TransData {
 
 
 bool GetAccountList(string sFNAccounts, AccountInfo arrAccList[]) {
+    
+    
+    /*string sTemp;
     ifstream fs;
     fs.open(sFNAccounts);
     if (!fs) {
@@ -50,33 +54,26 @@ bool GetAccountList(string sFNAccounts, AccountInfo arrAccList[]) {
     while (getline(fs, sAccDetail)) {
 
         stringstream inputString(sAccDetail);
-        //getline(sAccDetail, arrAccList[i].iAccountNum, ',');
-        //getline(sAccDetail, arrAccList[i].sName, ',');
-        //getline(sAccDetail, arrAccList[i].sAddress, ',');
-        //getline(sAccDetail, arrAccList[i].sState, ',');
-        //getline(sAccDetail, arrAccList[i].sZip, ',');
-        //getline(sAccDetail, arrAccList[i].sPhone, ',');
-        //getline(sAccDetail, arrAccList[i].sEMail, ',');
 
+        
+        getline(sAccDetail, sTemp, ',');
+        arrAccList[i].iAccountNum = atoi(sTemp.c_str())
+
+        getline(sAccDetail, arrAccList[i].sName, ',');
+        getline(sAccDetail, arrAccList[i].sAddress, ',');
+        getline(sAccDetail, arrAccList[i].sState, ',');
+        getline(sAccDetail, arrAccList[i].sZip, ',');
+        getline(sAccDetail, arrAccList[i].sPhone, ',');
+        getline(sAccDetail, arrAccList[i].sEMail, ',');
+
+        
+        
         i++;
-        sAccDetail = "";
+        //sAccDetail = "";
     }
 
-    /*while (fs.good()) {
-        getline(fs, sAccDetail, ',');
-    }
-    while (!fs.eof()) {
-
-       
-
-
-        fs >> arrAccList[i].iAccountNum;
-        for (int c = 0; c < iAccCols; c++) {
-
-        }
-    }*/
-    fs.close();
-}; 
+    fs.close();*/
+};
 
 
 
@@ -84,17 +81,19 @@ bool GetAccountList(string sFNAccounts, AccountInfo arrAccList[]) {
 
 int main()
 {
+    // Part of CountFileRows.h but doesn't work the way I want. 
     int iAccNum = 0;
     int iTHNum = 0;
     iAccNum = CountAccLines(sFNAccounts, iAccNum);
     iTHNum = CountTHLines(sFNTransHist, iTHNum);
-   
-    cout << "Accounts: " << iAccNum << endl;
-    cout << "Transact: " << iTHNum << endl << endl;
+
+    // FOR DEBUG PURPOSES
+    //cout << "Accounts: " << iAccNum << endl;
+    //cout << "Transact: " << iTHNum << endl << endl;
 
     AccountInfo arrAccList[10];
     char cMenu = 'M';
-
+    //
     ShowHeader();
 
     while (toupper(cMenu) != 'Q') {  // Stay in the loop unless the user enters Q/q to exit
@@ -105,17 +104,19 @@ int main()
             cin >> cMenu;            // Get the user's option
             break;                  // Break the case to go back to the top of the loop
         case 'A':                       // Function 1
-            //GetAccountList(sFNAccounts, arrAccList);
+            // GetAccountList(sFNAccounts, arrAccList);
+            // PrintAccounts();
             MenuCmd();
             cin >> cMenu;
             break;
-        case '2':                       // Function 2
-            //Function2();
+        case 'T':                       // Function 2
+            // GetTransHist();
+            // PrintTransHist();        // Print trasaction history for specific account
             MenuCmd();
             cin >> cMenu;
             break;
-        case '3':                       // Function 3
-            //Function3();
+        case 'D':                       // Function 3
+            DeleteAccount("AccountList.csv", sFNAccounts, iAccNum);
             MenuCmd();
             cin >> cMenu;
             break;

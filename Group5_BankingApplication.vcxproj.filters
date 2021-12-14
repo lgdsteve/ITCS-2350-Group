@@ -29,5 +29,16 @@
     <ClInclude Include="CountFileRows.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DeleteAcc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AccountList.csv">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="TransactionHistory.csv">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

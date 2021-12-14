@@ -143,8 +143,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CountFileRows.h" />
+    <ClInclude Include="DeleteAcc.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="LayoutFuncs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AccountList.csv" />
+    <None Include="TransactionHistory.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
