@@ -10,15 +10,24 @@ using namespace std;
 #include "Header.h"
 #include "LayoutFuncs.h"
 #include "CountFileRows.h"
+#include "AccountList.h"
+#include "TransHistory.h"
 #include "DeleteAcc.h"
 
 
 
 
 const string sFNAccounts = "AccountList.csv";
+const string sFNTransHist = "TransactionHistory.csv";
+
+const int iAccRows = 10;
 const int iAccCols = 6;
+const int iTHRows = 35;
+const int iTHCols = 5;
+
+
 struct AccountInfo {
-    int     iAccountNum = 0;
+    int     iAccountNum;
     string  sName;
     string  sAddress;
     string  sState;
@@ -27,7 +36,6 @@ struct AccountInfo {
     string  sEMail;
 };
 
-const string sFNTransHist = "TransactionHistory.csv";
 struct TransData {
     string sAccType;
     string sDate;
@@ -73,6 +81,7 @@ bool GetAccountList(string sFNAccounts, AccountInfo arrAccList[]) {
     }
 
     fs.close();*/
+    return true;
 };
 
 
@@ -81,42 +90,43 @@ bool GetAccountList(string sFNAccounts, AccountInfo arrAccList[]) {
 
 int main()
 {
-    // Part of CountFileRows.h but doesn't work the way I want. 
+    // Declare variables to count the rows in the files
     int iAccNum = 0;
     int iTHNum = 0;
-    iAccNum = CountAccLines(sFNAccounts, iAccNum);
-    iTHNum = CountTHLines(sFNTransHist, iTHNum);
+    iAccNum = CountAccLines(sFNAccounts, iAccNum);      // Call the functions to count the rows and return the value.
+    iTHNum = CountTHLines(sFNTransHist, iTHNum);        // These values will be passed into other functions (like DeleteAccount() function)
 
     // FOR DEBUG PURPOSES
     //cout << "Accounts: " << iAccNum << endl;
     //cout << "Transact: " << iTHNum << endl << endl;
 
-    AccountInfo arrAccList[10];
+    AccountInfo arrAccList[iAccRows];
+    TransData arrTransHist[iTHRows];
     char cMenu = 'M';
-    //
+    
     ShowHeader();
 
-    while (toupper(cMenu) != 'Q') {  // Stay in the loop unless the user enters Q/q to exit
+    while (toupper(cMenu) != 'Q') {                         // Stay in the loop unless the user enters Q/q to exit
         switch (toupper(cMenu)) {
-        case 'M':               // User entered M (or first run by default)
-            ShowMenu();            // Call the ShowMenu() function to display the menu options
-            MenuCmd();             // MenuCmd() function to show the menu
-            cin >> cMenu;            // Get the user's option
-            break;                  // Break the case to go back to the top of the loop
-        case 'A':                       // Function 1
-            // GetAccountList(sFNAccounts, arrAccList);
-            // PrintAccounts();
+        case 'M':                                           // User entered M (or first run by default)
+            ShowMenu();                                     // Call the ShowMenu() function to display the menu options
+            MenuCmd();                                      // MenuCmd() function to show the menu
+            cin >> cMenu;                                   // Get the user's option
+            break;                                          // Break the case to go back to the top of the loop
+        case 'A':                                           // Function 1
+            // GetAccountList(sFNAccounts, arrAccList);         // Get the account list
+            // PrintAccounts();                                 // Print the accounts list
             MenuCmd();
             cin >> cMenu;
             break;
-        case 'T':                       // Function 2
-            // GetTransHist();
-            // PrintTransHist();        // Print trasaction history for specific account
+        case 'T':
+            // GetTransHist();                                  // Get transaction history
+            // PrintTransHist();                                // Print trasaction history for specific account
             MenuCmd();
             cin >> cMenu;
             break;
-        case 'D':                       // Function 3
-            DeleteAccount("AccountList.csv", sFNAccounts, iAccNum);
+        case 'D':
+            DeleteAccount("AccountList.csv", sFNAccounts, iAccNum);         // Delete account from AccountList.csv
             MenuCmd();
             cin >> cMenu;
             break;
@@ -135,7 +145,7 @@ int main()
 
 
     cout << "Thank you!" << endl;    // User has entered Q/q to quit resulting in the loop ending
-    system("pause");                // Pause and end the program
+    system("pause");                 // Pause and end the program
     return 0;
 }
 
