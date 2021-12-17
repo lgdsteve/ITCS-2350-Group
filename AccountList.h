@@ -1,7 +1,7 @@
 #pragma once
 
 
-bool GetAccountList(string sFNAccounts, AccountInfo arrAccList[]) {
+bool GetAccountList(string sFNAccounts, AccountInfo AccData[iTHRows]) {
 
     /*string sTemp;
     ifstream fs;
@@ -42,6 +42,17 @@ bool GetAccountList(string sFNAccounts, AccountInfo arrAccList[]) {
 };
 
 
-void PrintAccounts() {
-
+void PrintAccounts(AccountInfo AccData[iAccRows]) {
+    cout << "| Index # | Account Number | Name | Address | State | Zip | Phone | E-Mail |" << endl;
+    for (int r = 0; r < iAccRows; r++) {
+        cout << r << ") "                               // Make sure to check if this print out a number > 1 or it will break the DeleteAcc() function (0 exits without change)
+            << AccData[r].iAccountNum << " "
+            << AccData[r].sName << " "
+            << AccData[r].sAddress << " "
+            << AccData[r].sState << " "
+            << AccData[r].sZip << " "
+            << AccData[r].sPhone << " "
+            << AccData[r].sEMail << endl;        
+    }
+    cout << endl;
 };

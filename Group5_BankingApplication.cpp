@@ -36,7 +36,7 @@ struct AccountInfo {
     string  sEMail;
 };
 
-struct TransData {
+struct TransHist {
     string sAccType;
     string sDate;
     string sDesc;
@@ -58,9 +58,9 @@ int main()
     //cout << "Accounts: " << iAccNum << endl;
     //cout << "Transact: " << iTHNum << endl << endl;
 
-    AccountInfo arrAccList[iAccRows];
-    TransData arrTransHist[iTHRows];
-    char cMenu = 'M';
+    AccountInfo AccData[iAccRows];              // Initialize the data structure array for the Accounts List file
+    TransHist TransData[iTHRows];               // Initialize the data structure array for the Transaction History file
+    char cMenu = 'M';                           // Default menu option to show the menu on first run
     
     ShowHeader();
 
@@ -73,13 +73,13 @@ int main()
             break;                                          // Break the case to go back to the top of the loop
         case 'A':                                           // Function 1
             // GetAccountList(sFNAccounts, arrAccList);         // Get the account list
-            // PrintAccounts();                                 // Print the accounts list
+            PrintAccounts(AccData);                                 // Print the accounts list
             MenuCmd();
             cin >> cMenu;
             break;
         case 'T':
             // GetTransHist();                                  // Get transaction history
-            // PrintTransHist();                                // Print trasaction history for specific account
+            PrintTransHist(TransData);                                // Print trasaction history for specific account
             MenuCmd();
             cin >> cMenu;
             break;
