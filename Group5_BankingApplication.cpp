@@ -14,17 +14,9 @@
 
 using namespace std;
 
-const string sFNAccounts = "AccountList.csv";
-const string sFNTransHist = "TransactionHistory.csv";
-
-const int iAccRows = 8;
-const int iAccCols = 10;
-const int iTHRows = 5;
-const int iTHCols = 35;
-
 
 struct AccountInfo {
-    int     iAccountNum;
+    string  iAccountNum;
     string  sName;
     string  sAddress;
     string  sDistrict;
@@ -38,12 +30,13 @@ struct TransHist {
     string sAccType;
     string sDate;
     string sDesc;
-    double dChange;
-    double dBalance;
+    string dChange;
+    string dBalance;
 };
 
-bool GetAccountList(string sFNAccounts, AccountInfo AccData[iAccRows])
+bool GetAccountList(string sFNAccounts, AccountInfo AccData[], int iAccSize)
 {
+    cout << "I ran" << endl;
     // Create output file stream
     ifstream inputStream; // we use in to input the file into our code insted of outputing the file.
     // Open output file stream
@@ -51,19 +44,16 @@ bool GetAccountList(string sFNAccounts, AccountInfo AccData[iAccRows])
 
     while (inputStream.good()) // this while loop will only loop to check if the file is good.
     {
-        for (int i = 0; i < iAccCols; i++) // this for loop will count the players from i which is 10 meaining it would loop 10 times adding each players name each time it loops into a new array box.
+        for (int i = 0; i < iAccSize; i++) // this for loop will count the players from i which is 10 meaining it would loop 10 times adding each players name each time it loops into a new array box.
         {
-            inputStream >> AccData[i].iAccountNum; // inputs data into the Players array.
 
-            for (int j = 0; j < iAccRows; j++) // this loop will each player and there 4 points for each round.
-            {
-                inputStream >> AccData[i].sName[j];
-                inputStream >> AccData[i].sAddress[j];
-                inputStream >> AccData[i].sState[j];
-                inputStream >> AccData[i].sZip[j];
-                inputStream >> AccData[i].sPhone[j];
-                inputStream >> AccData[i].sEMail[j];
-            }
+            getline(inputStream, AccData[i].iAccountNum, ',');
+            getline(inputStream, AccData[i].sName, ',');
+            getline(inputStream, AccData[i].sAddress, ',');
+            getline(inputStream, AccData[i].sState, ',');
+            getline(inputStream, AccData[i].sZip, ',');
+            getline(inputStream, AccData[i].sPhone, ',');
+            getline(inputStream, AccData[i].sEMail, ',');
         }
     }
 
@@ -71,9 +61,9 @@ bool GetAccountList(string sFNAccounts, AccountInfo AccData[iAccRows])
 };
 
 
-void PrintAccounts(AccountInfo AccData[iAccRows]) {
+void PrintAccounts(AccountInfo AccData[], int iAccSize) {
     cout << "| Index # | Account Number | Name | Address | District | State | Zip | Phone | E-Mail |" << endl;
-    for (int i = 0; i < iAccRows; i++) {
+    for (int i = 0; i < iAccSize; i++) {
         cout << i << ") "                               // Make sure to check if this print out a number > 1 or it will break the DeleteAcc() function (0 exits without change)
             << AccData[i].iAccountNum << " "
             << AccData[i].sName << " "
@@ -86,7 +76,7 @@ void PrintAccounts(AccountInfo AccData[iAccRows]) {
     cout << endl;
 };
 
-bool GetTransHist(string sFNTransHist, TransHist TransData[iTHRows])
+bool GetTransHist(string sFNTransHist, TransHist TransData[], int iTHsize)
 {
 
     // Create output file stream
@@ -96,18 +86,14 @@ bool GetTransHist(string sFNTransHist, TransHist TransData[iTHRows])
 
     while (inputStream.good()) // this while loop will only loop to check if the file is good.
     {
-        for (int i = 0; i < iTHCols; i++) // this for loop will count the players from i which is 10 meaining it would loop 10 times adding each players name each time it loops into a new array box.
+        for (int i = 0; i < iTHsize; i++) // this for loop will count the players from i which is 10 meaining it would loop 10 times adding each players name each time it loops into a new array box.
         {
-            inputStream >> TransData[i].sAccType; // inputs data into the Players array.
+            getline(inputStream, TransData[i].sAccType, ',');
+            getline(inputStream, TransData[i].sDate, ',');
+            getline(inputStream, TransData[i].sDesc, ',');
+            getline(inputStream, TransData[i].dChange, ',');
+            getline(inputStream, TransData[i].dBalance, ',');
 
-            for (int j = 0; j < iTHRows; j++) // this loop will each player and there 4 points for each round.
-            {
-                inputStream >> TransData[i].sDate;
-                inputStream >> TransData[i].sDesc;
-                inputStream >> TransData[i].dChange;
-                inputStream >> TransData[i].dBalance;
-
-            }
         }
     }
 
@@ -115,7 +101,7 @@ bool GetTransHist(string sFNTransHist, TransHist TransData[iTHRows])
 };
 
 
-void PrintTransHist(TransHist TransData[iTHRows])
+void PrintTransHist(TransHist TransData[], int iAccRows)
 {
     cout << "| # | Account Type | Date | Description | Balance Change | New Balance |" << endl;
     for (int i = 0; i < iAccRows; i++) {
@@ -129,7 +115,7 @@ void PrintTransHist(TransHist TransData[iTHRows])
     cout << endl;
 };
 
-int CountAccLines(string sFNAccounts, int iAccNum) {
+int CountAccLines(string sFNAccounts, int iAccSize) {
     ifstream fsAcc;
     fsAcc.open(sFNAccounts);
     string sA;
@@ -140,14 +126,14 @@ int CountAccLines(string sFNAccounts, int iAccNum) {
     }
     while (!fsAcc.eof()) {
         getline(fsAcc, sA);
-        iAccNum++;
+        iAccSize++;
     }
     fsAcc.close();
-    iAccNum = iAccNum - 1;
-    return iAccNum;
+    iAccSize = iAccSize - 1;
+    return iAccSize;
 }
 
-int CountTHLines(string sFNTransHist, int iTHNum) {
+int CountTHLines(string sFNTransHist, int iTHSize) {
     ifstream fsTH;
     fsTH.open(sFNTransHist);
     string sT;
@@ -158,15 +144,15 @@ int CountTHLines(string sFNTransHist, int iTHNum) {
     }
     while (!fsTH.eof()) {
         getline(fsTH, sT);
-        iTHNum++;
+        iTHSize++;
     }
     fsTH.close();
-    iTHNum = iTHNum - 1;
-    return iTHNum;
+    iTHSize = iTHSize - 1;
+    return iTHSize;
 
 }
 
-void DeleteAccount(const char* file_name, string sFNAccounts, int iAccNum) {
+void DeleteAccount(const char* file_name, string sFNAccounts, int iAccSize) {
     int AccIndexNum = 0;								// Account to be deleted
     char c;												// char c will be the character retrieved from the AccountsList file
     int iLineNum = 1;									// Current line number
@@ -178,7 +164,7 @@ void DeleteAccount(const char* file_name, string sFNAccounts, int iAccNum) {
     cout << endl;
 
     //Validate the entry and run the function
-    if (AccIndexNum < iAccNum && AccIndexNum > 0) {			// If the number is above 0 and less than the number of accounts..
+    if (AccIndexNum < iAccSize && AccIndexNum > 0) {			// If the number is above 0 and less than the number of accounts..
         ifstream ifs(sFNAccounts);							// Open the accounts file as read only
 
         ofstream ofs;										// Create the temp file to save changes to
@@ -207,7 +193,7 @@ void DeleteAccount(const char* file_name, string sFNAccounts, int iAccNum) {
         cout << "Returning to main menu..." << endl << endl;
     }
     else {													// Any other entry, break the function without changes.
-        cout << "Entry must be a number and less than " << iAccNum << endl;
+        cout << "Entry must be a number and less than " << iAccSize << endl;
     }
 }
 
@@ -217,19 +203,32 @@ void DeleteAccount(const char* file_name, string sFNAccounts, int iAccNum) {
 
 int main()
 {
+    // Declare constants
+    const int I_ACC_SIZE = 20;
+    const int I_TH_SIZE = 35;
+
+    const string S_ACC_NAME = "AccountListCopy.csv";
+    const string S_TH_NAME = "TransactionHistory.csv";
+
     // Declare variables to count the rows in the files
-    int iAccNum = 0;
-    int iTHNum = 0;
-    iAccNum = CountAccLines(sFNAccounts, iAccNum);      // Call the functions to count the rows and return the value.
-    iTHNum = CountTHLines(sFNTransHist, iTHNum);        // These values will be passed into other functions (like DeleteAccount() function)
+    int iAccSize = 0;
+    int iTHSize = 0;
+
+    iAccSize = CountAccLines(S_ACC_NAME, iAccSize);      // Call the functions to count the rows and return the value.
+    iTHSize = CountTHLines(S_TH_NAME, iTHSize);        // These values will be passed into other functions (like DeleteAccount() function)
 
     // FOR DEBUG PURPOSES
-    //cout << "Accounts: " << iAccNum << endl;
-    //cout << "Transact: " << iTHNum << endl << endl;
+    //cout << "Accounts: " << iAccSize << endl;
+    //cout << "Transact: " << iTHSize << endl << endl;
 
-    AccountInfo AccData[iAccRows];              // Initialize the data structure array for the Accounts List file
-    TransHist TransData[iTHRows];               // Initialize the data structure array for the Transaction History file
+    AccountInfo AccData[I_ACC_SIZE];              // Initialize the data structure array for the Accounts List file
+    TransHist TransData[I_TH_SIZE];               // Initialize the data structure array for the Transaction History file
+
+    GetAccountList(S_ACC_NAME, AccData, iAccSize);
+    GetTransHist(S_ACC_NAME, TransData, iTHSize);
     char cMenu = 'M';                           // Default menu option to show the menu on first run
+
+    cout << fixed;
 
     ShowHeader();
 
@@ -242,18 +241,18 @@ int main()
             break;                                          // Break the case to go back to the top of the loop
         case 'A':                                           // Function 1
             // GetAccountList(sFNAccounts, arrAccList);         // Get the account list
-            PrintAccounts(AccData[iAccRows]);                                 // Print the accounts list
+            PrintAccounts(AccData, iAccSize);                                 // Print the accounts list
             MenuCmd();
             cin >> cMenu;
             break;
         case 'T':
             // GetTransHist();                                  // Get transaction history
-            PrintTransHist(TransData[iTHRows]);                                // Print trasaction history for specific account
+            PrintTransHist(TransData, iTHSize);                                // Print trasaction history for specific account
             MenuCmd();
             cin >> cMenu;
             break;
         case 'D':
-            DeleteAccount("AccountList.csv", sFNAccounts, iAccNum);         // Delete account from AccountList.csv
+            DeleteAccount("AccountList.csv", S_ACC_NAME, iAccSize);         // Delete account from AccountList.csv
             MenuCmd();
             cin >> cMenu;
             break;
